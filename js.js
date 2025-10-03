@@ -374,3 +374,60 @@ var ParticlePool = (function() {
 })();
 
 
+/* ====== Lồng đèn trời bay hai bên (thêm vào cuối file) ====== */
+(function () {
+  const container = document.getElementById('sky-lanterns');
+  if (!container) return;
+
+  // cấu hình
+  const LEFT_ZONE  = [0.08, 0.28];  // 8% -> 28% viewport width
+  const RIGHT_ZONE = [0.72, 0.95];  // 72% -> 95% viewport width
+  const MIN_INTERVAL = 550;         // ms
+  const MAX_INTERVAL = 1200;        // ms
+  const MIN_DURATION = 9000;        // ms
+  const MAX_DURATION = 16000;       // ms
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function pickZone() { return Math.random() < 0.5 ? LEFT_ZONE : RIGHT_ZONE; }
+
+  function spawnLantern() {
+    const zone = pickZone();
+    const xPct = rand(zone[0], zone[1]) * 100; // %
+    const sizeScale = rand(0.75, 1.35);
+    const drift = rand(-12, 12);               // lắc ngang nhẹ
+    const duration = rand(MIN_DURATION, MAX_DURATION);
+
+    const el = document.createElement('div');
+    el.className = 'sky-lantern';
+    el.style.left = xPct + 'vw';
+    el.style.animationDuration = duration + 'ms';
+    el.style.transform = `translateX(-50%) scale(${sizeScale})`;
+    el.style.opacity = String(rand(0.7, 0.95));
+
+    // trôi ngang nhẹ nhàng bằng Web Animations API (không nặng)
+    el.animate(
+      [
+        { transform: `translate(-50%, 0) scale(${sizeScale})` },
+        { transform: `translate(calc(-50% + ${drift}px), -60vh) scale(${sizeScale * 1.02})` },
+        { transform: `translate(calc(-50% + ${-drift}px), -120vh) scale(${sizeScale * 1.05})` }
+      ],
+      { duration: duration, easing: 'linear' }
+    );
+
+    container.appendChild(el);
+
+    // tự hủy khi bay xong
+    setTimeout(() => el.remove(), duration + 200);
+    // tiếp tục sinh
+    setTimeout(spawnLantern, rand(MIN_INTERVAL, MAX_INTERVAL));
+  }
+
+  // khởi động sau khi DOM sẵn sàng
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', spawnLantern);
+  } else {
+    spawnLantern();
+  }
+})();
+
+
