@@ -200,6 +200,8 @@ var ParticlePool = (function() {
   function onResize(){
     canvas.width  = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   window.onresize = onResize;
 
@@ -429,5 +431,10 @@ var ParticlePool = (function() {
     spawnLantern();
   }
 })();
+
+ // Cho phép phát nhạc khi user chạm lần đầu trên mobile
+  document.addEventListener('touchstart', () => {
+    audio.play().catch(()=>{});
+  }, { once: true });
 
 

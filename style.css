@@ -25,25 +25,27 @@ html, body {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
-.text p {
+/* .text p {
   margin: 0;
   font-size: 48px;
   font-weight: 700;
   color: #ffd54f;
   text-align: center;
   text-shadow: 0 2px 6px rgba(0,0,0,.6);
+} */
+
+.text p {
+  font-size: clamp(20px, 6vw, 48px); /* nhỏ nhất 20px, lớn nhất 48px */
 }
 
 /* Vòng chữ chạy tròn đặt ở dưới trái tim, vẫn trong cùng khung hình */
+
+
+/* Vòng chữ chạy co theo màn hình */
 .circular-text {
-  position: absolute;
-  left: 50%;
-  bottom: 3vh;              /* khoảng cách lên khỏi mép dưới */
-  transform: translateX(-50%);
-  width: 220px;             /* kích thước vòng chữ */
-  height: 250px;
-  z-index: 3;               /* trên canvas */
-  pointer-events: none;     /* tránh bắt chuột */
+  width: min(50vw, 220px);
+  height: min(50vw, 220px);
+  bottom: 5vh;
 }
 
 /* SVG full khung .circular-text */
@@ -111,13 +113,8 @@ html, body {
 
 /* Lồng đèn treo (trái/phải) */
 .lantern {
-  position: absolute;
-  top: 8vh;
-  width: 90px;
-  height: 120px;
-  transform-origin: 50% -40px; /* treo từ sợi dây tưởng tượng phía trên */
-  filter: drop-shadow(0 6px 12px rgba(255, 100, 0, 0.4));
-  opacity: 0.95;
+  width: clamp(50px, 20vw, 90px);
+  height: auto;
 }
 .lantern.left  { left: min(5vw, 60px); }
 .lantern.right { right: min(5vw, 60px); }
